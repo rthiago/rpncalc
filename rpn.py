@@ -4,7 +4,7 @@ import operator
 import sys
 
 
-operations = {
+OPERATIONS = {
     '+': operator.add,
     '-': operator.sub,
     '/': operator.truediv,
@@ -17,7 +17,7 @@ def calculate(expressions, stack):
         if is_number(expression):
             stack.append(float(expression))
         else:
-            operation = operations[expression]
+            operation = OPERATIONS[expression]
             stack.append(operation(stack.pop(-2), stack.pop()))
 
     return stack
@@ -54,7 +54,7 @@ def interactive():
             else:
                 stack = calculate(user_input.split(), stack)
     except (EOFError, KeyboardInterrupt):
-        print() # Line break.
+        print()  # Line break.
 
     print('Bye')
 
@@ -62,7 +62,7 @@ def interactive():
 def main():
     sys.argv.pop(0)
 
-    if not len(sys.argv):
+    if len(sys.argv) == 0:
         interactive()
         return
 
