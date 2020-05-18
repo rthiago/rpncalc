@@ -12,7 +12,7 @@ def stdin(expressions):
         if expression.isnumeric():
             stack.append(expression)
         else:
-            stack.append(eval(stack.pop() + expression + stack.pop()))
+            stack.append(eval(stack.pop(-2) + expression + stack.pop(-1)))
 
     print(stack)
 
