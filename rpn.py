@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import inspect
+import math
 import operator
 import sys
 
@@ -9,6 +11,27 @@ OPERATIONS = {
     '-': operator.sub,
     '/': operator.truediv,
     '*': operator.mul,
+    'pow': math.pow,
+    'sqrt': math.sqrt,
+    'acos': math.acos,
+    'asin': math.asin,
+    'atan': math.atan,
+    'cos': math.cos,
+    'cosh': math.cosh,
+    'sin': math.sin,
+    'sinh': math.sinh,
+    'tanh': math.tanh,
+    'ceil': math.ceil,
+    'floor': math.floor,
+    'round': lambda a, b: round(a, int(b)),
+    'ip': lambda a: a // 1,
+    'fp': lambda a: a % 1,
+    'sign': lambda a: a * -1,
+    'abs': math.fabs,
+    'fact': math.factorial,
+    'ln': math.log1p,
+    'log': math.log10,
+    'exp': math.exp,
 }
 
 
@@ -18,7 +41,12 @@ def calculate(expressions, stack):
             stack.append(float(expression))
         else:
             operation = OPERATIONS[expression]
-            stack.append(operation(stack.pop(-2), stack.pop()))
+            if len(inspect.getfullargspec(operation).args) == 2:
+                # Two argument functions
+                stack.append(operation(stack.pop(-2), stack.pop()))
+            else:
+                # Single argument functions
+                stack.append(operation(stack.pop()))
 
     return stack
 
