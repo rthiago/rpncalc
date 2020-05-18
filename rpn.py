@@ -41,12 +41,15 @@ def calculate(expressions, stack):
             stack.append(float(expression))
         else:
             operation = OPERATIONS[expression]
-            if len(inspect.getfullargspec(operation).args) == 2:
-                # Two argument functions
-                stack.append(operation(stack.pop(-2), stack.pop()))
-            else:
-                # Single argument functions
-                stack.append(operation(stack.pop()))
+            try:
+                if len(inspect.getfullargspec(operation).args) == 2:
+                    # Two argument functions
+                    stack.append(operation(stack.pop(-2), stack.pop()))
+                else:
+                    # Single argument functions
+                    stack.append(operation(stack.pop()))
+            except IndexError:
+                print('Stack too shallow. Push more values.')
 
     return stack
 
@@ -64,7 +67,9 @@ def print_help():
 
 
 def one_shot(expressions):
-    print(calculate(expressions, []).pop())
+    result = calculate(expressions, [])
+    if len(result) > 0:
+        print(result.pop())
 
 
 def interactive():
