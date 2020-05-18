@@ -1,23 +1,41 @@
 #!/usr/bin/python
 
+import operator
 import sys
 
-def print_help():
-    print('help')
 
-def stdin(expressions):
+operations = {
+    '+': operator.add,
+    '-': operator.sub,
+    '/': operator.truediv,
+    '*': operator.mul,
+}
+
+
+def calculate(expressions):
     stack = []
 
     for expression in expressions:
         if expression.isnumeric():
-            stack.append(expression)
+            stack.append(float(expression))
         else:
-            stack.append(eval(stack.pop(-2) + expression + stack.pop(-1)))
+            operation = operations[expression]
+            stack.append(operation(stack.pop(-2), stack.pop()))
 
-    print(stack)
+    return stack.pop()
+
+
+def print_help():
+    print('help')
+
+
+def stdin(expressions):
+    print(calculate(expressions))
+
 
 def interactive():
     print('interactive')
+
 
 def main():
     sys.argv.pop(0)
@@ -30,6 +48,7 @@ def main():
         print_help()
     else:
         stdin(sys.argv)
+
 
 if __name__ == '__main__':
     main()
