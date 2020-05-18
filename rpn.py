@@ -29,7 +29,7 @@ def print_help():
     print('help')
 
 
-def stdin(expressions):
+def one_shot(expressions):
     print(calculate(expressions))
 
 
@@ -47,7 +47,7 @@ def main():
     if sys.argv[0] == '--help':
         print_help()
     else:
-        stdin(sys.argv)
+        one_shot(sys.argv)
 
 
 if __name__ == '__main__':
