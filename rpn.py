@@ -5,8 +5,16 @@ import sys
 def print_help():
     print('help')
 
-def stdin():
-    print('stdin')
+def stdin(expressions):
+    stack = []
+
+    for expression in expressions:
+        if expression.isnumeric():
+            stack.append(expression)
+        else:
+            stack.append(eval(stack.pop() + expression + stack.pop()))
+
+    print(stack)
 
 def interactive():
     print('interactive')
@@ -21,7 +29,7 @@ def main():
     if sys.argv[0] == '--help':
         print_help()
     else:
-        stdin()
+        stdin(sys.argv)
 
 if __name__ == '__main__':
     main()
