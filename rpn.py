@@ -12,9 +12,7 @@ operations = {
 }
 
 
-def calculate(expressions):
-    stack = []
-
+def calculate(expressions, stack):
     for expression in expressions:
         if expression.isnumeric():
             stack.append(float(expression))
@@ -22,7 +20,7 @@ def calculate(expressions):
             operation = operations[expression]
             stack.append(operation(stack.pop(-2), stack.pop()))
 
-    return stack.pop()
+    return stack
 
 
 def print_help():
@@ -30,11 +28,14 @@ def print_help():
 
 
 def one_shot(expressions):
-    print(calculate(expressions))
+    print(calculate(expressions, []).pop())
 
 
 def interactive():
-    print('interactive')
+    stack = []
+
+    while True:
+        stack = calculate(input(' '.join(map(str, stack)) + ' > ').split(), stack)
 
 
 def main():
