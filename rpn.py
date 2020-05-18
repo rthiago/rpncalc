@@ -34,8 +34,21 @@ def one_shot(expressions):
 def interactive():
     stack = []
 
-    while True:
-        stack = calculate(input(' '.join(map(str, stack)) + ' > ').split(), stack)
+    try:
+        while True:
+            prompt = ' '.join(map(str, stack)) + ' > '
+            user_input = input(prompt.lstrip())
+
+            if user_input == 'exit':
+                break
+            elif user_input == 'clr':
+                stack = []
+            else:
+                stack = calculate(user_input.split(), stack)
+    except (EOFError, KeyboardInterrupt):
+        print() # Line break.
+
+    print('Bye')
 
 
 def main():
