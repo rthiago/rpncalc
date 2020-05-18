@@ -14,13 +14,21 @@ operations = {
 
 def calculate(expressions, stack):
     for expression in expressions:
-        if expression.isnumeric():
+        if is_number(expression):
             stack.append(float(expression))
         else:
             operation = operations[expression]
             stack.append(operation(stack.pop(-2), stack.pop()))
 
     return stack
+
+
+def is_number(val):
+    try:
+        float(val)
+        return True
+    except ValueError:
+        return False
 
 
 def print_help():
