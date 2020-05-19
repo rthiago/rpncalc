@@ -86,3 +86,6 @@ def test_trigonometric_functions():
 def test_commands():
     results = rpn.calculate('1 2 3 clr 4 5 6 +'.split(), [])
     assert results == [4, 11]
+
+    results = rpn.calculate('1 e 3'.split(), [])
+    assert results == [1, 2.718281828459045, 3]
