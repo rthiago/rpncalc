@@ -30,6 +30,15 @@ OPERATIONS = {
     'ln': math.log1p,
     'log': math.log10,
     'exp': math.exp,
+    '%': operator.mod,
+    '++': lambda a: a + 1,
+    '--': lambda a: a - 1,
+    '|': lambda a, b: operator.or_(int(a), int(b)),
+    '&': lambda a, b: operator.and_(int(a), int(b)),
+    '^': lambda a, b: operator.xor(int(a), int(b)),
+    '~': lambda a: operator.inv(int(a)),
+    '>>': lambda a, b: operator.rshift(int(a), int(b)),
+    '<<': lambda a, b: operator.lshift(int(a), int(b)),
 }
 
 

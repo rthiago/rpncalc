@@ -108,3 +108,32 @@ def test_commands():
 
     results = rpn.calculate('3 4 5 12 swap'.split(), [])
     assert results == [3, 4, 12, 5]
+
+def test_operators():
+    results = rpn.calculate('5 2 %'.split(), [])
+    assert results == [1]
+
+    results = rpn.calculate('5 ++'.split(), [])
+    assert results == [6]
+
+    results = rpn.calculate('333 --'.split(), [])
+    assert results == [332]
+
+def test_bitwise():
+    results = rpn.calculate('1 2 |'.split(), [])
+    assert results == [3]
+
+    results = rpn.calculate('12 55 &'.split(), [])
+    assert results == [4]
+
+    results = rpn.calculate('2 9 ^'.split(), [])
+    assert results == [11]
+
+    results = rpn.calculate('4 ~'.split(), [])
+    assert results == [-5]
+
+    results = rpn.calculate('4 1 >>'.split(), [])
+    assert results == [2]
+
+    results = rpn.calculate('4 2 <<'.split(), [])
+    assert results == [16]
