@@ -10,7 +10,7 @@ def calculate(expressions, stack):
             stack.append(float(expression))
         elif operations.can_handle(expression):
             try:
-                operations.handle(expression, stack)
+                stack = operations.handle(expression, stack)
             except IndexError:
                 print('Stack too shallow. Push more values.')
         else:
@@ -47,8 +47,6 @@ def interactive():
 
             if user_input == 'exit':
                 break
-            elif user_input == 'clr':
-                stack = []
             else:
                 stack = calculate(user_input.split(), stack)
     except (EOFError, KeyboardInterrupt):

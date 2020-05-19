@@ -30,10 +30,10 @@ def test_math_functions():
 
 
 def test_utilities():
-    results = rpn.calculate('9.1 ceil '.split(), [])
+    results = rpn.calculate('9.1 ceil'.split(), [])
     assert results == [10]
 
-    results = rpn.calculate('9.1 floor '.split(), [])
+    results = rpn.calculate('9.1 floor'.split(), [])
     assert results == [9]
 
     results = rpn.calculate('9.458801 2 round'.split(), [])
@@ -82,3 +82,7 @@ def test_trigonometric_functions():
 
     results = rpn.calculate('1 tanh'.split(), [])
     assert round(results.pop(), 8) == 0.76159416
+
+def test_commands():
+    results = rpn.calculate('1 2 3 clr 4 5 6 +'.split(), [])
+    assert results == [4, 11]
