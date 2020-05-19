@@ -43,6 +43,7 @@ STACK_FUNCTIONS = {
     'dup': lambda a: a + [a[-1]],
     'drop': lambda a: a[:-1],
     'depth': lambda a: a + [float(len(a))],
+    'swap': lambda a: a[:-2] + [a[-1]] + [a[-2]],
 }
 
 

@@ -105,3 +105,6 @@ def test_commands():
 
     results = rpn.calculate('3 4 5 12 depth'.split(), [])
     assert results == [3, 4, 5, 12, 4]
+
+    results = rpn.calculate('3 4 5 12 swap'.split(), [])
+    assert results == [3, 4, 12, 5]
