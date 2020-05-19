@@ -1,60 +1,20 @@
 #!/usr/bin/python
 
-import inspect
-import math
-import operator
+import operations
 import sys
-
-
-OPERATIONS = {
-    '+': operator.add,
-    '-': operator.sub,
-    '/': operator.truediv,
-    '*': operator.mul,
-    'pow': math.pow,
-    'sqrt': math.sqrt,
-    'acos': math.acos,
-    'asin': math.asin,
-    'atan': math.atan,
-    'cos': math.cos,
-    'cosh': math.cosh,
-    'sin': math.sin,
-    'sinh': math.sinh,
-    'tanh': math.tanh,
-    'ceil': math.ceil,
-    'floor': math.floor,
-    'round': lambda a, b: round(a, int(b)),
-    'ip': lambda a: a // 1,
-    'fp': lambda a: a % 1,
-    'sign': lambda a: a * -1,
-    'abs': math.fabs,
-    'fact': math.factorial,
-    'ln': math.log1p,
-    'log': math.log10,
-    'exp': math.exp,
-    'max': lambda a: max(a),
-    'min': lambda a: min(a),
-}
 
 
 def calculate(expressions, stack):
     for expression in expressions:
         if is_number(expression):
             stack.append(float(expression))
-        else:
-            operation = OPERATIONS[expression]
+        elif operations.can_handle(expression):
             try:
-                if expression in ['min', 'max']:
-                    # Whole stack functions.
-                    stack.append(operation(stack))
-                elif len(inspect.getfullargspec(operation).args) == 2:
-                    # Two argument functions
-                    stack.append(operation(stack.pop(-2), stack.pop()))
-                else:
-                    # Single argument functions
-                    stack.append(operation(stack.pop()))
+                operations.handle(expression, stack)
             except IndexError:
                 print('Stack too shallow. Push more values.')
+        else:
+            print("Don't know what to do...")
 
     return stack
 
