@@ -30,6 +30,10 @@ OPERATIONS = {
     'ln': math.log1p,
     'log': math.log10,
     'exp': math.exp,
+}
+
+
+STACK_FUNCTIONS = {
     'max': lambda a: a + [max(a)],
     'min': lambda a: a + [min(a)],
     'clr': lambda a: [],
@@ -42,27 +46,15 @@ OPERATIONS = {
 }
 
 
-STACK_FUNCTIONS = [
-    'min',
-    'max',
-    'clr',
-    'e',
-    'pi',
-    'rand',
-    'dup',
-    'drop',
-    'depth',
-]
-
-
 def handle(expression, stack):
-    operation = OPERATIONS[expression]
-
     if expression in STACK_FUNCTIONS:
         # Whole stack functions.
-        stack = operation(stack)
+        operation = STACK_FUNCTIONS[expression]
+        return operation(stack)
 
-    elif len(inspect.getfullargspec(operation).args) == 2:
+    operation = OPERATIONS[expression]
+
+    if len(inspect.getfullargspec(operation).args) == 2:
         # Two argument functions
         stack.append(operation(stack.pop(-2), stack.pop()))
 
@@ -74,4 +66,4 @@ def handle(expression, stack):
 
 
 def can_handle(expression):
-    return expression in OPERATIONS
+    return expression in OPERATIONS or expression in STACK_FUNCTIONS
