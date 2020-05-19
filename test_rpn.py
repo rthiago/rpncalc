@@ -89,3 +89,6 @@ def test_commands():
 
     results = rpn.calculate('1 e 3'.split(), [])
     assert results == [1, 2.718281828459045, 3]
+
+    results = rpn.calculate('1 2 pi'.split(), [])
+    assert results == [1, 2, 3.141592653589793]

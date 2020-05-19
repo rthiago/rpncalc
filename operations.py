@@ -33,6 +33,7 @@ OPERATIONS = {
     'min': lambda a: a + [min(a)],
     'clr': lambda a: [],
     'e': lambda a: a + [math.e],
+    'pi': lambda a: a + [math.pi],
 }
 
 
@@ -41,6 +42,7 @@ STACK_FUNCTIONS = [
     'max',
     'clr',
     'e',
+    'pi',
 ]
 
 
