@@ -12,9 +12,9 @@ def calculate(expressions, stack):
             try:
                 stack = operations.handle(expression, stack)
             except IndexError:
-                print('Stack too shallow. Push more values.')
+                print('Stack too shallow. Push more values.', file=sys.stderr)
         else:
-            print("Don't know what to do...")
+            print("Don't know what to do...", file=sys.stderr)
 
     return stack
 
@@ -58,6 +58,10 @@ def interactive():
 
 def main():
     sys.argv.pop(0)
+
+    if not sys.stdin.isatty():
+        one_shot(sys.stdin.read().split())
+        return
 
     if len(sys.argv) == 0:
         interactive()
