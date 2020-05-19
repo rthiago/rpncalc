@@ -96,3 +96,12 @@ def test_commands():
 
     results = rpn.calculate('rand'.split(), [])
     assert float(results.pop()) < 1
+
+    results = rpn.calculate('1 2 3 dup'.split(), [])
+    assert results == [1, 2, 3, 3]
+
+    results = rpn.calculate('1 2 3 drop'.split(), [])
+    assert results == [1, 2]
+
+    results = rpn.calculate('3 4 5 12 depth'.split(), [])
+    assert results == [3, 4, 5, 12, 4]

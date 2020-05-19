@@ -36,6 +36,9 @@ OPERATIONS = {
     'e': lambda a: a + [math.e],
     'pi': lambda a: a + [math.pi],
     'rand': lambda a: a + [random.random()],
+    'dup': lambda a: a + [a[-1]],
+    'drop': lambda a: a[:-1],
+    'depth': lambda a: a + [float(len(a))],
 }
 
 
@@ -46,6 +49,9 @@ STACK_FUNCTIONS = [
     'e',
     'pi',
     'rand',
+    'dup',
+    'drop',
+    'depth',
 ]
 
 
