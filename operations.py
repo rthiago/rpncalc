@@ -1,6 +1,7 @@
-import math
 import inspect
+import math
 import operator
+import random
 
 
 OPERATIONS = {
@@ -34,6 +35,7 @@ OPERATIONS = {
     'clr': lambda a: [],
     'e': lambda a: a + [math.e],
     'pi': lambda a: a + [math.pi],
+    'rand': lambda a: a + [random.random()],
 }
 
 
@@ -43,6 +45,7 @@ STACK_FUNCTIONS = [
     'clr',
     'e',
     'pi',
+    'rand',
 ]
 
 
@@ -62,6 +65,7 @@ def handle(expression, stack):
         stack.append(operation(stack.pop()))
 
     return stack
+
 
 def can_handle(expression):
     return expression in OPERATIONS

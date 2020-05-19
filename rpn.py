@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-import operations
 import sys
+import operations
 
 
 def calculate(expressions, stack):
@@ -47,8 +47,9 @@ def interactive():
 
             if user_input == 'exit':
                 break
-            else:
-                stack = calculate(user_input.split(), stack)
+
+            stack = calculate(user_input.split(), stack)
+
     except (EOFError, KeyboardInterrupt):
         print()  # Line break.
 

@@ -83,6 +83,7 @@ def test_trigonometric_functions():
     results = rpn.calculate('1 tanh'.split(), [])
     assert round(results.pop(), 8) == 0.76159416
 
+
 def test_commands():
     results = rpn.calculate('1 2 3 clr 4 5 6 +'.split(), [])
     assert results == [4, 11]
@@ -92,3 +93,6 @@ def test_commands():
 
     results = rpn.calculate('1 2 pi'.split(), [])
     assert results == [1, 2, 3.141592653589793]
+
+    results = rpn.calculate('rand'.split(), [])
+    assert float(results.pop()) < 1
