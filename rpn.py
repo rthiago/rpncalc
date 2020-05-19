@@ -32,6 +32,8 @@ OPERATIONS = {
     'ln': math.log1p,
     'log': math.log10,
     'exp': math.exp,
+    'max': lambda a: max(a),
+    'min': lambda a: min(a),
 }
 
 
@@ -42,7 +44,10 @@ def calculate(expressions, stack):
         else:
             operation = OPERATIONS[expression]
             try:
-                if len(inspect.getfullargspec(operation).args) == 2:
+                if expression in ['min', 'max']:
+                    # Whole stack functions.
+                    stack.append(operation(stack))
+                elif len(inspect.getfullargspec(operation).args) == 2:
                     # Two argument functions
                     stack.append(operation(stack.pop(-2), stack.pop()))
                 else:
