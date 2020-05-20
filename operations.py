@@ -54,6 +54,12 @@ OPERATIONS = {
     '||': lambda a, b: a or b,
     '^^': lambda a, b: int(a) ^ int(b),
     '!': lambda a: float(not a),
+    '!=': lambda a, b: float(a != b),
+    '<': lambda a, b: float(a < b),
+    '<=': lambda a, b: float(a <= b),
+    '==': lambda a, b: float(a == b),
+    '>': lambda a, b: float(a > b),
+    '>=': lambda a, b: float(a >= b),
 }
 
 
