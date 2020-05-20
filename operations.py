@@ -2,6 +2,7 @@ import inspect
 import math
 import operator
 import random
+import socket
 
 import state
 
@@ -45,6 +46,10 @@ OPERATIONS = {
     'dec': lambda: state.set_mode('dec'),
     'oct': lambda: state.set_mode('oct'),
     'bin': lambda: state.set_mode('bin'),
+    'hnl': lambda a: socket.htonl(int(a)),
+    'hns': lambda a: socket.htons(int(a)),
+    'nhl': lambda a: socket.ntohl(int(a)),
+    'nhs': lambda a: socket.ntohs(int(a)),
 }
 
 

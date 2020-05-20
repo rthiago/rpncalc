@@ -15,6 +15,8 @@ def calculate(expressions, stack):
                 stack = operations.handle(expression, stack)
             except IndexError:
                 print('Stack too shallow. Push more values.', file=sys.stderr)
+            except OverflowError:
+                print('Invalid value.', file=sys.stderr)
 
         elif is_number(expression):
             base = guess_base(expression)

@@ -156,3 +156,23 @@ def test_modes():
 
     results = rpn.calculate('bin 0xaa55 2 | 1 ~ &'.split(), [])
     assert results == [0b1010101001010110]
+
+
+def test_networking():
+    results = rpn.calculate('3232235521 hnl'.split(), [])
+    assert results == [16820416]
+
+    results = rpn.calculate('16820416 nhl'.split(), [])
+    assert results == [3232235521]
+
+    results = rpn.calculate('4096 hns'.split(), [])
+    assert results == [16]
+
+    results = rpn.calculate('16 nhs'.split(), [])
+    assert results == [4096]
+
+def test_errors(capsys):
+    results = rpn.calculate('-1 hnl'.split(), [])
+    captured = capsys.readouterr()
+    assert len(captured.err) > 0
+    assert results == []
