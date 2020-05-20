@@ -20,6 +20,9 @@ def calculate(expressions, stack):
             except (OverflowError, ValueError):
                 print('Invalid value for ' + expression + '.', file=sys.stderr)
 
+            except ZeroDivisionError:
+                print("You can't divide by zero.", file=sys.stderr)
+
         elif is_number(expression):
             base = guess_base(expression)
             if base == 10:

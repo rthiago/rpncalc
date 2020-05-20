@@ -192,6 +192,11 @@ def test_errors(capsys):
     assert len(capsys.readouterr().err) > 0
     assert results == []
 
+    # Zero division
+    results = rpn.calculate('0 0 /'.split(), [])
+    assert len(capsys.readouterr().err) > 0
+    assert results == []
+
 def test_boolean():
     results = rpn.calculate('1 1 &&'.split(), [])
     assert results == [1]
