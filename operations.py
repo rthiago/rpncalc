@@ -50,6 +50,10 @@ OPERATIONS = {
     'hns': lambda a: socket.htons(int(a)),
     'nhl': lambda a: socket.ntohl(int(a)),
     'nhs': lambda a: socket.ntohs(int(a)),
+    '&&': lambda a, b: a and b,
+    '||': lambda a, b: a or b,
+    '^^': lambda a, b: int(a) ^ int(b),
+    '!': lambda a: float(not a),
 }
 
 
@@ -76,6 +80,7 @@ def handle(expression, stack):
     operation = OPERATIONS[expression]
 
     arg_count = len(inspect.getfullargspec(operation).args)
+
     if arg_count == 2:
         # Two argument functions
         stack.append(operation(stack.pop(-2), stack.pop()))

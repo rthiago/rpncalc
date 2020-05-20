@@ -195,3 +195,19 @@ def test_errors(capsys):
     captured = capsys.readouterr()
     assert len(captured.err) > 0
     assert results == []
+
+def test_boolean():
+    results = rpn.calculate('1 1 &&'.split(), [])
+    assert results == [1]
+
+    results = rpn.calculate('1 0 &&'.split(), [])
+    assert results == [0]
+
+    results = rpn.calculate('1 0 ||'.split(), [])
+    assert results == [1]
+
+    results = rpn.calculate('1 2 ^^'.split(), [])
+    assert results == [3]
+
+    results = rpn.calculate('1 !'.split(), [])
+    assert results == [0]
