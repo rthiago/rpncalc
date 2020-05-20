@@ -3,6 +3,8 @@ import math
 import operator
 import random
 
+import state
+
 
 OPERATIONS = {
     '+': operator.add,
@@ -39,6 +41,10 @@ OPERATIONS = {
     '~': lambda a: operator.inv(int(a)),
     '>>': lambda a, b: operator.rshift(int(a), int(b)),
     '<<': lambda a, b: operator.lshift(int(a), int(b)),
+    'hex': lambda: state.set_mode('hex'),
+    'dec': lambda: state.set_mode('dec'),
+    'oct': lambda: state.set_mode('oct'),
+    'bin': lambda: state.set_mode('bin'),
 }
 
 
@@ -64,13 +70,18 @@ def handle(expression, stack):
 
     operation = OPERATIONS[expression]
 
-    if len(inspect.getfullargspec(operation).args) == 2:
+    arg_count = len(inspect.getfullargspec(operation).args)
+    if arg_count == 2:
         # Two argument functions
         stack.append(operation(stack.pop(-2), stack.pop()))
 
-    else:
+    elif arg_count == 1:
         # Single argument functions
         stack.append(operation(stack.pop()))
+
+    else:
+        # No arguments
+        operation()
 
     return stack
 

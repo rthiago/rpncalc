@@ -1,18 +1,23 @@
 #!/usr/bin/python
 
 import sys
+
 import operations
+import state
 
 
 def calculate(expressions, stack):
     for expression in expressions:
-        if is_number(expression):
-            stack.append(float(expression))
-        elif operations.can_handle(expression):
+        if operations.can_handle(expression):
             try:
                 stack = operations.handle(expression, stack)
             except IndexError:
                 print('Stack too shallow. Push more values.', file=sys.stderr)
+        elif is_number(expression):
+            if state.get_mode() == 'dec':
+                stack.append(float(expression))
+            else:
+                stack.append(int(expression, state.get_base()))
         else:
             print("Don't know what to do...", file=sys.stderr)
 
@@ -21,7 +26,11 @@ def calculate(expressions, stack):
 
 def is_number(val):
     try:
-        float(val)
+        if state.get_mode() == 'dec':
+            float(val)
+        else:
+            int(val, state.get_base())
+
         return True
     except ValueError:
         return False
@@ -34,7 +43,7 @@ def print_help():
 def one_shot(expressions):
     result = calculate(expressions, [])
     if len(result) > 0:
-        print(result.pop())
+        print(format_output(result))
 
 
 def interactive():
@@ -42,8 +51,8 @@ def interactive():
 
     try:
         while True:
-            prompt = ' '.join(map(str, stack)) + ' > '
-            user_input = input(prompt.lstrip())
+            prompt = state.get_mode() + ' ' + format_output(stack) + ' > '
+            user_input = input(prompt.lstrip().replace('  ', ' '))
 
             if user_input == 'exit':
                 break
@@ -54,6 +63,18 @@ def interactive():
         print()  # Line break.
 
     print('Bye')
+
+
+def format_output(stack):
+    if state.get_mode() == 'dec':
+        return ' '.join(map(str, stack))
+
+    tmp = []
+
+    for value in stack:
+        tmp.append(state.convert(value))
+
+    return ' '.join(map(str, tmp))
 
 
 def main():

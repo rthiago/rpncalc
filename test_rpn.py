@@ -109,6 +109,7 @@ def test_commands():
     results = rpn.calculate('3 4 5 12 swap'.split(), [])
     assert results == [3, 4, 12, 5]
 
+
 def test_operators():
     results = rpn.calculate('5 2 %'.split(), [])
     assert results == [1]
@@ -118,6 +119,7 @@ def test_operators():
 
     results = rpn.calculate('333 --'.split(), [])
     assert results == [332]
+
 
 def test_bitwise():
     results = rpn.calculate('1 2 |'.split(), [])
@@ -137,3 +139,17 @@ def test_bitwise():
 
     results = rpn.calculate('4 2 <<'.split(), [])
     assert results == [16]
+
+
+def test_modes():
+    results = rpn.calculate('hex 0x6 0x7 + 0x5 * 0x4 + 3 * f +'.split(), [])
+    assert results == [0xde]
+
+    results = rpn.calculate('oct 0o6 0o7 + 0o5 * 0o4 + 3 * 17 +'.split(), [])
+    assert results == [0o336]
+
+    results = rpn.calculate('bin 0b110 0b111 + 0b101 * 0b100 + 0b11 * 0b1111 +'.split(), [])
+    assert results == [0b11011110]
+
+    results = rpn.calculate('bin 0b110 hex 0x7 + oct 0o5 * bin 0b100 + dec 3 * 15 +'.split(), [])
+    assert results == [222]
