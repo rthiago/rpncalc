@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import re
+import readline
 import sys
 
 import operations
