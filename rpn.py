@@ -87,14 +87,18 @@ def interactive():
 
 def format_output(stack):
     if state.get_mode() == 'dec':
-        return ' '.join(map(str, stack))
+        return ' '.join(map(format_number, stack))
 
     tmp = []
 
     for value in stack:
         tmp.append(state.convert(value))
 
-    return ' '.join(map(str, tmp))
+    return ' '.join(map(format_number, tmp))
+
+
+def format_number(value):
+    return re.sub(r'\.0+$', '', str(value))
 
 
 def main():
