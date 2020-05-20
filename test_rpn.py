@@ -172,7 +172,26 @@ def test_networking():
     assert results == [4096]
 
 def test_errors(capsys):
+    # Overflow
     results = rpn.calculate('-1 hnl'.split(), [])
+    captured = capsys.readouterr()
+    assert len(captured.err) > 0
+    assert results == []
+
+    # Not enough values in stack
+    results = rpn.calculate('4 +'.split(), [])
+    captured = capsys.readouterr()
+    assert len(captured.err) > 0
+    assert results == [4]
+
+    # Invalid command
+    results = rpn.calculate('foobar'.split(), [])
+    captured = capsys.readouterr()
+    assert len(captured.err) > 0
+    assert results == []
+
+    # ValueError
+    results = rpn.calculate('10 acos'.split(), [])
     captured = capsys.readouterr()
     assert len(captured.err) > 0
     assert results == []
