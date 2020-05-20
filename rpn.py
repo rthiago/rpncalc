@@ -74,7 +74,10 @@ def interactive():
             if user_input == 'exit':
                 break
 
-            stack = calculate(user_input.split(), stack)
+            if user_input == 'help':
+                print_help()
+            else:
+                stack = calculate(user_input.split(), stack)
 
     except (EOFError, KeyboardInterrupt):
         print()  # Line break.
