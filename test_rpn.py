@@ -142,10 +142,10 @@ def test_bitwise():
 
 
 def test_modes():
-    results = rpn.calculate('hex 0x6 0x7 + 0x5 * 0x4 + 3 * f +'.split(), [])
+    results = rpn.calculate('hex 0x6 0x7 + 0x5 * 0x4 + 3 * 0xf +'.split(), [])
     assert results == [0xde]
 
-    results = rpn.calculate('oct 0o6 0o7 + 0o5 * 0o4 + 3 * 17 +'.split(), [])
+    results = rpn.calculate('oct 0o6 0o7 + 0o5 * 0o4 + 3 * 0o17 +'.split(), [])
     assert results == [0o336]
 
     results = rpn.calculate('bin 0b110 0b111 + 0b101 * 0b100 + 0b11 * 0b1111 +'.split(), [])
@@ -153,3 +153,6 @@ def test_modes():
 
     results = rpn.calculate('bin 0b110 hex 0x7 + oct 0o5 * bin 0b100 + dec 3 * 15 +'.split(), [])
     assert results == [222]
+
+    results = rpn.calculate('bin 0xaa55 2 | 1 ~ &'.split(), [])
+    assert results == [0b1010101001010110]

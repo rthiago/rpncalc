@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import re
 import sys
 
 import operations
@@ -13,27 +14,38 @@ def calculate(expressions, stack):
                 stack = operations.handle(expression, stack)
             except IndexError:
                 print('Stack too shallow. Push more values.', file=sys.stderr)
+
         elif is_number(expression):
-            if state.get_mode() == 'dec':
+            base = guess_base(expression)
+            if base == 10:
                 stack.append(float(expression))
             else:
-                stack.append(int(expression, state.get_base()))
+                stack.append(int(expression, base))
+
         else:
             print("Don't know what to do...", file=sys.stderr)
 
     return stack
 
 
-def is_number(val):
-    try:
-        if state.get_mode() == 'dec':
-            float(val)
-        else:
-            int(val, state.get_base())
+def is_number(value):
+    return (re.search(r'^[-+]?[0-9]+\.?[0-9]*$', value)
+            or re.search('^(0b)?[01]+$', value)
+            or re.search('^(0x)?[0-9a-f]+$', value)
+            or re.search('^(0o)?[0-7]+$', value))
 
-        return True
-    except ValueError:
-        return False
+
+def guess_base(value):
+    if re.search('^0b', value):
+        return 2
+
+    if re.search('^0o', value):
+        return 8
+
+    if re.search('^0x', value):
+        return 16
+
+    return 10
 
 
 def print_help():
