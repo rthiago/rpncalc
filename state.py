@@ -44,3 +44,7 @@ def get_variables():
 
 def get_variable_value(variable):
     return State.variables[variable]
+
+
+def clear_variables():
+    State.variables.clear()

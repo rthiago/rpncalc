@@ -61,6 +61,7 @@ OPERATIONS = {
     '==': lambda a, b: float(a == b),
     '>': lambda a, b: float(a > b),
     '>=': lambda a, b: float(a >= b),
+    'clv': lambda: state.clear_variables(),
 }
 
 
@@ -75,6 +76,7 @@ STACK_FUNCTIONS = {
     'drop': lambda a: a[:-1],
     'depth': lambda a: a + [float(len(a))],
     'swap': lambda a: a[:-2] + [a[-1]] + [a[-2]],
+    'cla': lambda a: clear_all(a),
 }
 
 
@@ -120,3 +122,10 @@ def is_variable_assignment(expression):
         return True
 
     return False
+
+
+def clear_all(stack):
+    stack = []
+    state.clear_variables()
+
+    return stack

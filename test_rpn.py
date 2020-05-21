@@ -109,6 +109,12 @@ def test_commands():
     results = rpn.calculate('3 4 5 12 swap'.split(), [])
     assert results == [3, 4, 12, 5]
 
+    results = rpn.calculate('1 x= clv x'.split(), [])
+    assert results == []
+
+    results = rpn.calculate('1 2 x= cla x'.split(), [])
+    assert results == []
+
 
 def test_operators():
     results = rpn.calculate('5 2 %'.split(), [])
