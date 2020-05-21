@@ -83,10 +83,11 @@ def interactive():
 
     try:
         while True:
-            prompt = format_variables()
-            prompt += state.get_mode()
+            prompt = state.get_mode()
+            prompt += ' ' + format_variables()
             prompt += ' ' + format_output(stack) + ' > '
-            user_input = input(prompt.lstrip().replace('  ', ' '))
+            prompt = re.sub('( ){2,}', ' ', prompt)
+            user_input = input(prompt)
 
             if user_input == 'exit':
                 break
@@ -108,20 +109,19 @@ def format_variables():
     if len(variables) == 0:
         return ''
 
-    items = {k + '=' + str(v) for (k, v) in variables.items()}
+    items = []
+    for key, value in variables.items():
+        items.append(key + '=' + format_number(state.convert(value)))
+
     return '[ ' + ' '.join(items) + ' ] '
 
 
 def format_output(stack):
-    if state.get_mode() == 'dec':
-        return ' '.join(map(format_number, stack))
-
-    tmp = []
-
+    items = []
     for value in stack:
-        tmp.append(state.convert(value))
+        items.append(state.convert(value))
 
-    return ' '.join(map(format_number, tmp))
+    return ' '.join(map(format_number, items))
 
 
 def format_number(value):

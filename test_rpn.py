@@ -250,3 +250,6 @@ def test_variables():
 
     results = rpn.calculate('10 one= 20 two= 30 three= one two three'.split(), [])
     assert results == [10, 20, 30]
+
+    results = rpn.calculate('10 20 30 x= oct x'.split(), [])
+    assert results == [0o12, 0o24, 0o36]
