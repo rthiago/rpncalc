@@ -1,6 +1,8 @@
 class State:
     mode = 'dec'
 
+    variables = {}
+
 
 def set_mode(mode):
     State.mode = mode
@@ -30,3 +32,11 @@ def convert(value):
     }
 
     return converters[get_mode()](int(value))
+
+
+def assign_variable(name, value):
+    State.variables[name] = value
+
+
+def get_variables():
+    return State.variables

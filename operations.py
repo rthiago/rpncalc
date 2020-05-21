@@ -2,6 +2,7 @@ import inspect
 import math
 import operator
 import random
+import re
 import socket
 
 import state
@@ -79,28 +80,43 @@ STACK_FUNCTIONS = {
 
 def handle(expression, stack):
     if expression in STACK_FUNCTIONS:
-        # Whole stack functions.
         operation = STACK_FUNCTIONS[expression]
         return operation(stack)
+
+    if is_variable_assignment(expression):
+        state.assign_variable(expression.replace('=', ''), stack.pop())
+        return stack
 
     operation = OPERATIONS[expression]
 
     arg_count = len(inspect.getfullargspec(operation).args)
 
     if arg_count == 2:
-        # Two argument functions
         stack.append(operation(stack.pop(-2), stack.pop()))
 
     elif arg_count == 1:
-        # Single argument functions
         stack.append(operation(stack.pop()))
 
     else:
-        # No arguments
         operation()
 
     return stack
 
 
 def can_handle(expression):
+    return is_variable_assignment(expression) or is_function(expression)
+
+
+def is_function(expression):
     return expression in OPERATIONS or expression in STACK_FUNCTIONS
+
+
+def is_variable_assignment(expression):
+    if re.search('^[a-zA-Z_]+=', expression):
+        if is_function(expression.replace('=', '')):
+            raise ValueError(
+                'Variable cannot have same name as an internal function.')
+
+        return True
+
+    return False

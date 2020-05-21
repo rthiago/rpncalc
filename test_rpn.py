@@ -171,6 +171,7 @@ def test_networking():
     results = rpn.calculate('16 nhs'.split(), [])
     assert results == [4096]
 
+
 def test_errors(capsys):
     # Overflow
     results = rpn.calculate('-1 hnl'.split(), [])
@@ -197,6 +198,7 @@ def test_errors(capsys):
     assert len(capsys.readouterr().err) > 0
     assert results == []
 
+
 def test_boolean():
     results = rpn.calculate('1 1 &&'.split(), [])
     assert results == [1]
@@ -212,6 +214,7 @@ def test_boolean():
 
     results = rpn.calculate('1 !'.split(), [])
     assert results == [0]
+
 
 def test_comparison():
     results = rpn.calculate('1 2 <'.split(), [])

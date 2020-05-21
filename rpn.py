@@ -10,28 +10,28 @@ import state
 
 def calculate(expressions, stack):
     for expression in expressions:
-        if operations.can_handle(expression):
-            try:
+        try:
+            if operations.can_handle(expression):
                 stack = operations.handle(expression, stack)
 
-            except IndexError:
-                print('Stack too shallow. Push more values.', file=sys.stderr)
+            elif is_number(expression):
+                base = guess_base(expression)
+                if base == 10:
+                    stack.append(float(expression))
+                else:
+                    stack.append(int(expression, base))
 
-            except (OverflowError, ValueError):
-                print('Invalid value for ' + expression + '.', file=sys.stderr)
-
-            except ZeroDivisionError:
-                print("You can't divide by zero.", file=sys.stderr)
-
-        elif is_number(expression):
-            base = guess_base(expression)
-            if base == 10:
-                stack.append(float(expression))
             else:
-                stack.append(int(expression, base))
+                print("Don't know what to do...", file=sys.stderr)
 
-        else:
-            print("Don't know what to do...", file=sys.stderr)
+        except IndexError:
+            print('Stack too shallow. Push more values.', file=sys.stderr)
+
+        except (OverflowError, ValueError) as err:
+            print('Invalid value: ' + str(err), file=sys.stderr)
+
+        except ZeroDivisionError:
+            print("You can't divide by zero.", file=sys.stderr)
 
     return stack
 
@@ -71,7 +71,9 @@ def interactive():
 
     try:
         while True:
-            prompt = state.get_mode() + ' ' + format_output(stack) + ' > '
+            prompt = format_variables()
+            prompt += state.get_mode()
+            prompt += ' ' + format_output(stack) + ' > '
             user_input = input(prompt.lstrip().replace('  ', ' '))
 
             if user_input == 'exit':
@@ -86,6 +88,15 @@ def interactive():
         print()  # Line break.
 
     print('Bye')
+
+
+def format_variables():
+    variables = state.get_variables()
+    if len(variables) == 0:
+        return ''
+
+    items = {k + '=' + str(v) for (k, v) in variables.items()}
+    return '[ ' + ' '.join(items) + ' ] '
 
 
 def format_output(stack):
