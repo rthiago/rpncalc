@@ -15,11 +15,11 @@ def calculate(expressions, stack):
                 stack = operations.handle(expression, stack)
 
             elif is_number(expression):
-                base = guess_base(expression)
-                if base == 10:
-                    stack.append(float(expression))
-                else:
-                    stack.append(int(expression, base))
+                append_number(expression, stack)
+
+            elif expression in state.get_variables():
+                value = state.get_variable_value(expression)
+                append_number(value, stack)
 
             else:
                 print("Don't know what to do...", file=sys.stderr)
@@ -41,6 +41,18 @@ def is_number(value):
             or re.search('^(0b)?[01]+$', value)
             or re.search('^(0x)?[0-9a-f]+$', value)
             or re.search('^(0o)?[0-7]+$', value))
+
+
+def append_number(value, stack):
+    base = guess_base(str(value))
+
+    if base == 10:
+        stack.append(float(value))
+
+    else:
+        stack.append(int(value, base))
+
+    return stack
 
 
 def guess_base(value):
@@ -81,6 +93,7 @@ def interactive():
 
             if user_input == 'help':
                 print_help()
+
             else:
                 stack = calculate(user_input.split(), stack)
 
@@ -128,6 +141,7 @@ def main():
 
     if sys.argv[0] == '--help':
         print_help()
+
     else:
         one_shot(sys.argv)
 

@@ -198,6 +198,11 @@ def test_errors(capsys):
     assert len(capsys.readouterr().err) > 0
     assert results == []
 
+    # Assign variable to internal function name
+    results = rpn.calculate('10 hex='.split(), [])
+    assert len(capsys.readouterr().err) > 0
+    assert results == [10]
+
 
 def test_boolean():
     results = rpn.calculate('1 1 &&'.split(), [])
@@ -237,3 +242,11 @@ def test_comparison():
 
     results = rpn.calculate('1 10 <='.split(), [])
     assert results == [1]
+
+
+def test_variables():
+    results = rpn.calculate('10 20 x= 30 + x + x'.split(), [])
+    assert results == [60, 20]
+
+    results = rpn.calculate('10 one= 20 two= 30 three= one two three'.split(), [])
+    assert results == [10, 20, 30]

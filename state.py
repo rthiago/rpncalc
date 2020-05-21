@@ -40,3 +40,7 @@ def assign_variable(name, value):
 
 def get_variables():
     return State.variables
+
+
+def get_variable_value(variable):
+    return State.variables[variable]
