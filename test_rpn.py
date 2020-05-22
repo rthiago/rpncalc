@@ -282,3 +282,8 @@ def test_macros():
 
     results = rpn.calculate('macro foo 1 + ; 1 foo foo', [])
     assert results == [3]
+
+
+def test_one_shot(capsys):
+    rpn.one_shot('dec 1 2 +')
+    assert capsys.readouterr().out.strip() == '3'

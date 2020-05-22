@@ -192,7 +192,7 @@ def main():
     sys.argv.pop(0)
 
     if not sys.stdin.isatty():
-        one_shot(sys.stdin.read().split())
+        one_shot(sys.stdin.read())
         return
 
     if len(sys.argv) == 0:
@@ -203,7 +203,7 @@ def main():
         print_help()
 
     else:
-        one_shot(sys.argv)
+        one_shot(' '.join(sys.argv))
 
 
 if __name__ == '__main__':
