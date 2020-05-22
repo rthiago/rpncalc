@@ -5,6 +5,7 @@ import re
 import readline
 import sys
 
+import colors
 import operations
 import state
 
@@ -86,11 +87,7 @@ def interactive():
 
     try:
         while True:
-            prompt = state.get_mode()
-            prompt += ' ' + format_variables()
-            prompt += ' ' + format_output(stack) + ' > '
-            prompt = re.sub('( ){2,}', ' ', prompt)
-            user_input = input(prompt)
+            user_input = input(format_prompt(stack))
 
             if user_input == 'exit':
                 break
@@ -102,9 +99,7 @@ def interactive():
                 stack = calculate(user_input.split(), stack)
 
     except (EOFError, KeyboardInterrupt):
-        print()  # Line break.
-
-    print('Bye')
+        pass
 
 
 def parse_rc():
@@ -116,6 +111,18 @@ def parse_rc():
         return []
 
 
+def format_prompt(stack):
+    prompt = colors.LIGHTBLACK + state.get_mode()
+    prompt +=  colors.RESET + format_variables()
+
+    if len(stack) > 0:
+        prompt += ' ' + colors.LIGHTWHITE + format_output(stack)
+
+    prompt += colors.GREEN + ' > ' + colors.RESET
+
+    return prompt
+
+
 def format_variables():
     variables = state.get_variables()
     if len(variables) == 0:
@@ -125,7 +132,7 @@ def format_variables():
     for key, value in variables.items():
         items.append(key + '=' + format_number(state.convert(value)))
 
-    return '[ ' + ' '.join(items) + ' ] '
+    return ' [ ' + ' '.join(items) + ' ]'
 
 
 def format_output(stack):
