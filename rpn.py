@@ -11,7 +11,7 @@ import state
 
 
 def calculate(expressions, stack):
-    for expression in expressions:
+    for expression in expressions.split():
         try:
             if operations.can_handle(expression):
                 stack = operations.handle(expression, stack)
@@ -96,7 +96,7 @@ def interactive():
                 print_help()
 
             else:
-                stack = calculate(user_input.split(), stack)
+                stack = calculate(user_input, stack)
 
     except (EOFError, KeyboardInterrupt):
         pass
@@ -105,7 +105,7 @@ def interactive():
 def parse_rc():
     try:
         with open(str(Path.home()) + '/.rpnrc') as rc:
-            return calculate(rc.read().split(), [])
+            return calculate(rc.read(), [])
 
     except FileNotFoundError:
         return []
@@ -113,7 +113,7 @@ def parse_rc():
 
 def format_prompt(stack):
     prompt = colors.LIGHTBLACK + state.get_mode()
-    prompt +=  colors.RESET + format_variables()
+    prompt += colors.RESET + format_variables()
 
     if len(stack) > 0:
         prompt += ' ' + colors.LIGHTWHITE + format_output(stack)
