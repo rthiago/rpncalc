@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from pathlib import Path
 import re
 import readline
 import sys
@@ -73,13 +74,15 @@ def print_help():
 
 
 def one_shot(expressions):
-    result = calculate(expressions, [])
+    stack = parse_rc()
+    result = calculate(expressions, stack)
+
     if len(result) > 0:
         print(format_output(result))
 
 
 def interactive():
-    stack = []
+    stack = parse_rc()
 
     try:
         while True:
@@ -102,6 +105,15 @@ def interactive():
         print()  # Line break.
 
     print('Bye')
+
+
+def parse_rc():
+    try:
+        with open(str(Path.home()) + '/.rpnrc') as rc:
+            return calculate(rc.read().split(), [])
+
+    except FileNotFoundError:
+        return []
 
 
 def format_variables():
