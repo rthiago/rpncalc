@@ -209,6 +209,12 @@ def test_errors(capsys):
     assert len(capsys.readouterr().err) > 0
     assert results == [10]
 
+    # Will only evaluate macros with boundaries
+    rpn.calculate('macro fullword 1 +', [])
+    results = rpn.calculate('fullword=', [])
+    assert len(capsys.readouterr().err) > 0
+    assert results == []
+
 
 def test_boolean():
     results = rpn.calculate('1 1 &&', [])
@@ -259,3 +265,14 @@ def test_variables():
 
     results = rpn.calculate('10 20 30 x= oct x', [])
     assert results == [0o12, 0o24, 0o36]
+
+
+def test_macros():
+    results = rpn.calculate('macro foo 1000 +', [])
+    assert results == []
+
+    results = rpn.calculate('macro bar 1 +', [])
+    assert results == []
+
+    results = rpn.calculate('5 foo bar', [])
+    assert results == [1006]

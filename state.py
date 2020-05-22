@@ -3,6 +3,8 @@ class State:
 
     variables = {}
 
+    macros = {}
+
 
 def set_mode(mode):
     State.mode = mode
@@ -48,3 +50,11 @@ def get_variable_value(variable):
 
 def clear_variables():
     State.variables.clear()
+
+
+def assign_macro(name, value):
+    State.macros[name] = value.strip()
+
+
+def get_macros():
+    return State.macros

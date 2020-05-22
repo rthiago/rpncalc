@@ -11,6 +11,8 @@ import state
 
 
 def calculate(expressions, stack):
+    expressions = evaluate_macros(expressions)
+
     for expression in expressions.split():
         try:
             if operations.can_handle(expression):
@@ -24,7 +26,8 @@ def calculate(expressions, stack):
                 append_number(value, stack)
 
             else:
-                print("Don't know what to do...", file=sys.stderr)
+                print("Don't know what to do with " + expression,
+                      file=sys.stderr)
 
         except IndexError:
             print('Stack too shallow. Push more values.', file=sys.stderr)
@@ -36,6 +39,23 @@ def calculate(expressions, stack):
             print("You can't divide by zero.", file=sys.stderr)
 
     return stack
+
+
+def evaluate_macros(expressions):
+    for macro in re.findall('macro ([a-z]+) (.*?)(;|\n|$)', expressions):
+        if operations.is_function(macro[0]):
+            print('Macro cannot have same name as an internal function.',
+                  file=sys.stderr)
+
+        state.assign_macro(macro[0], macro[1])
+
+    expressions = re.sub('macro.*?(;|\n|$)', ' ', expressions)
+
+    for name, macro in state.get_macros().items():
+        expressions = re.sub(
+            r'(^|\s)' + name + r'(\s|$)', ' ' + macro + ' ', expressions)
+
+    return expressions
 
 
 def is_number(value):
@@ -94,6 +114,9 @@ def interactive():
 
             if user_input == 'help':
                 print_help()
+
+            if user_input == 'macros':
+                print(state.get_macros())
 
             else:
                 stack = calculate(user_input, stack)
