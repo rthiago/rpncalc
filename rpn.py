@@ -42,18 +42,36 @@ def calculate(expressions, stack):
 
 
 def evaluate_macros(expressions):
-    for macro in re.findall('macro ([a-z]+) (.*?)(;|\n|$)', expressions):
-        if operations.is_function(macro[0]):
+    expressions = store_new_macros(expressions)
+    expressions = execute_macros(expressions)
+
+    return expressions
+
+
+def store_new_macros(expressions):
+    """Find all new macros and store them.
+    """
+
+    regex = r'(^|\s)macro ([a-z]+) (.*?)(;|\n|$)'
+    for macro in re.findall(regex, expressions, re.MULTILINE):
+        if operations.is_function(macro[1]):
             print('Macro cannot have same name as an internal function.',
                   file=sys.stderr)
 
-        state.assign_macro(macro[0], macro[1])
+        state.assign_macro(macro[1], macro[2])
 
-    expressions = re.sub('macro.*?(;|\n|$)', ' ', expressions)
+    expressions = re.sub(r'\bmacro.*?(;|\n|$)', ' ', expressions, re.MULTILINE)
+
+    return expressions
+
+
+def execute_macros(expressions):
+    """Replaces macros to be executed with its actual commands.
+    """
 
     for name, macro in state.get_macros().items():
-        expressions = re.sub(
-            r'(^|\s)' + name + r'(\s|$)', ' ' + macro + ' ', expressions)
+        regex = r'\b{}(\s|$)'.format(name)
+        expressions = re.sub(regex, ' ' + macro + ' ', expressions)
 
     return expressions
 

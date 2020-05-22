@@ -276,3 +276,9 @@ def test_macros():
 
     results = rpn.calculate('5 foo bar', [])
     assert results == [1006]
+
+    results = rpn.calculate('macro mymacro 4 * ; 4 mymacro', [])
+    assert results == [16]
+
+    results = rpn.calculate('macro foo 1 + ; 1 foo foo', [])
+    assert results == [3]
