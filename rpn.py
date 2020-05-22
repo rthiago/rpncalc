@@ -120,6 +120,11 @@ def one_shot(expressions):
         print(format_output(result))
 
 
+def print_macros():
+    for name, macro in state.get_macros().items():
+        print('{}: {}'.format(name, macro))
+
+
 def interactive():
     stack = parse_rc()
 
@@ -134,7 +139,7 @@ def interactive():
                 print_help()
 
             if user_input == 'macros':
-                print(state.get_macros())
+                print_macros()
 
             else:
                 stack = calculate(user_input, stack)
