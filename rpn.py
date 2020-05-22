@@ -71,7 +71,7 @@ def execute_macros(expressions):
 
     for name, macro in state.get_macros().items():
         regex = r'\b{}(\s|$)'.format(name)
-        expressions = re.sub(regex, ' ' + macro + ' ', expressions)
+        expressions = re.sub(regex, ' {} '.format(macro), expressions)
 
     return expressions
 
@@ -171,9 +171,9 @@ def format_variables():
 
     items = []
     for key, value in variables.items():
-        items.append(key + '=' + format_number(state.convert(value)))
+        items.append('{}={}'.format(key, format_number(state.convert(value))))
 
-    return ' [ ' + ' '.join(items) + ' ]'
+    return ' [{}]'.format(' '.join(items))
 
 
 def format_output(stack):
