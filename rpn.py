@@ -6,6 +6,7 @@ import readline
 import sys
 
 import colors
+import helper
 import operations
 import state
 
@@ -108,10 +109,6 @@ def guess_base(value):
     return 10
 
 
-def print_help():
-    print('help')
-
-
 def one_shot(expressions):
     stack = parse_rc()
     result = calculate(expressions, stack)
@@ -135,10 +132,10 @@ def interactive():
             if user_input == 'exit':
                 break
 
-            if user_input == 'help':
-                print_help()
+            elif user_input == 'help':
+                helper.commands()
 
-            if user_input == 'macros':
+            elif user_input == 'macros':
                 print_macros()
 
             else:
@@ -182,6 +179,9 @@ def format_variables():
 
 
 def format_output(stack):
+    if state.get_mode() == 'dec':
+        return ' '.join(map(format_number, stack))
+
     items = []
     for value in stack:
         items.append(state.convert(value))
@@ -198,14 +198,15 @@ def main():
 
     if not sys.stdin.isatty():
         one_shot(sys.stdin.read())
-        return
 
-    if len(sys.argv) == 0:
+    elif len(sys.argv) == 0:
         interactive()
-        return
 
-    if sys.argv[0] == '--help':
-        print_help()
+    elif sys.argv[0] == '--help':
+        helper.cli()
+
+    elif sys.argv[0] == '--commands':
+        helper.commands()
 
     else:
         one_shot(' '.join(sys.argv))
