@@ -33,7 +33,10 @@ def convert(value):
         'hex': hex,
     }
 
-    return converters[get_mode()](int(value))
+    if get_mode() != 'dec':
+        value = int(value)
+
+    return converters[get_mode()](value)
 
 
 def assign_variable(name, value):

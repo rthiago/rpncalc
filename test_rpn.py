@@ -287,3 +287,6 @@ def test_macros():
 def test_one_shot(capsys):
     rpn.one_shot('dec 1 2 +')
     assert capsys.readouterr().out.strip() == '3'
+
+    rpn.one_shot('9.123')
+    assert capsys.readouterr().out.strip() == '9.123'
