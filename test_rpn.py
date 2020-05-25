@@ -19,6 +19,9 @@ def test_math_functions():
     results = rpn.calculate('4 fact', [])
     assert results == [24]
 
+    results = rpn.calculate('40 fact 1 +', [])
+    assert results == [815915283247897734345611269596115894272000000001]
+
     results = rpn.calculate('9 sqrt', [])
     assert results == [3]
 

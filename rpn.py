@@ -88,7 +88,10 @@ def append_number(value, stack):
     base = guess_base(str(value))
 
     if base == 10:
-        stack.append(float(value))
+        if float(value).is_integer():
+            stack.append(int(float(value)))
+        else:
+            stack.append(float(value))
 
     else:
         stack.append(int(value, base))
